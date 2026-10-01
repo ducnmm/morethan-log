@@ -4,7 +4,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/morethanmin/morethan-log.git"
+    "url": "https://github.com/ducnmm/morethan-log.git"
   },
   "scripts": {
     "dev": "next dev",

@@ -1,37 +1,54 @@
 const CONFIG = {
   // profile setting (required)
   profile: {
-    name: "morethanmin",
-    image: "/avatar.svg", // If you want to create your own notion avatar, check out https://notion-avatar.vercel.app
-    role: "frontend developer",
-    bio: "I develop everything using node.",
-    email: "morethanmin.dev@gmail.com",
-    linkedin: "morethanmin",
-    github: "morethanmin",
+    name: "Nguyen Mau Minh Duc",
+    image: "/avatar.png",
+    role: "Fullstack Developer",
+    bio: "Ho Chi Minh City. TypeScript, Go, Rust, and Move — backends, product UI, and Sui.",
+    email: "mauduckiengiang@gmail.com",
+    linkedin: "mauduckg",
+    github: "ducnmm",
     instagram: "",
   },
   projects: [
     {
-      name: `morethan-log`,
-      href: "https://github.com/morethanmin/morethan-log",
+      name: "MemWal",
+      href: "https://memory.walrus.xyz/",
+    },
+    {
+      name: "Rememe",
+      href: "https://app.rememe.art/",
+    },
+    {
+      name: "Dugong",
+      href: "https://dugong.up.railway.app",
+    },
+    {
+      name: "Octopus",
+      href: "https://octopus-server.up.railway.app/",
+    },
+    {
+      name: "GitHub",
+      href: "https://github.com/ducnmm",
     },
   ],
   // blog setting (required)
   blog: {
-    title: "morethan-log",
-    description: "welcome to morethan-log!",
+    title: "Duc",
+    description: "Notes and projects from Nguyen Mau Minh Duc.",
     scheme: "dark", // 'light' | 'dark' | 'system'
   },
 
   // CONFIG configration (required)
-  link: "https://morethan-log.vercel.app",
-  since: 2022, // If leave this empty, current year will be used.
+  link: "https://morethan-log-production.up.railway.app",
+  since: 2023, // professional work started Jun 2023
   lang: "en-US", // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES', 'ko-KR']
-  ogImageGenerateURL: "https://og-image-korean.vercel.app", // The link to generate OG image, don't end with a slash
+  ogImageGenerateURL: "https://og-image-korean.vercel.app",
 
   // notion configuration (required)
+  // Public database "Duc log" in Duc's Notion. Override with NOTION_PAGE_ID if it changes.
   notionConfig: {
-    pageId: process.env.NOTION_PAGE_ID,
+    pageId: process.env.NOTION_PAGE_ID || "9c87f33335894a839c70ce28155b2899",
   },
 
   // plugin configuration (optional)
@@ -56,7 +73,7 @@ const CONFIG = {
   utterances: {
     enable: true,
     config: {
-      repo: process.env.NEXT_PUBLIC_UTTERANCES_REPO || "",
+      repo: process.env.NEXT_PUBLIC_UTTERANCES_REPO || "ducnmm/morethan-log",
       "issue-term": "og:title",
       label: "💬 Utterances",
     },
@@ -65,11 +82,11 @@ const CONFIG = {
     enable: false,
     config: {
       host: "https://cusdis.com",
-      appid: "", // Embed Code -> data-app-id value
+      appid: "",
     },
   },
-  isProd: process.env.VERCEL_ENV === "production", // distinguish between development and production environment (ref: https://vercel.com/docs/environment-variables#system-environment-variables)
-  revalidateTime: 21600 * 7, // revalidate time for [slug], index
+  isProd: process.env.RAILWAY_ENVIRONMENT === "production" || process.env.VERCEL_ENV === "production",
+  revalidateTime: 3600,
 }
 
 module.exports = { CONFIG }

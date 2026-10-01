@@ -1,7 +1,5 @@
-import { NotionAPI } from "notion-client"
+import { getPublicPage } from "./publicPage"
 
 export const getRecordMap = async (pageId: string) => {
-  const api = new NotionAPI()
-  const recordMap = await api.getPage(pageId)
-  return recordMap
+  return getPublicPage(pageId)
 }
