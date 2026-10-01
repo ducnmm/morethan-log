@@ -29,11 +29,11 @@ const CONFIG = {
   blog: {
     title: "ducnmm-log",
     description: "Notes on backends, storage, and on-chain systems.",
-    scheme: "light", // 'light' | 'dark' | 'system'
+    scheme: "dark", // 'light' | 'dark' | 'system'
   },
 
   // CONFIG configration (required)
-  link: "https://morethan-log-production.up.railway.app",
+  link: "https://ducnmm-log.up.railway.app",
   since: 2026,
   lang: "en-US", // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES', 'ko-KR']
   ogImageGenerateURL: "https://og-image-korean.vercel.app",
