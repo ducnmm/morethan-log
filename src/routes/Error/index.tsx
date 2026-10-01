@@ -1,7 +1,5 @@
 import styled from "@emotion/styled"
 import React from "react"
-import { Emoji } from "src/components/Emoji"
-
 type Props = {}
 
 const CustomError: React.FC<Props> = () => {
@@ -9,11 +7,9 @@ const CustomError: React.FC<Props> = () => {
     <StyledWrapper>
       <div className="wrapper">
         <div className="top">
-          <div>4</div>
-          <Emoji>🤔</Emoji>
-          <div>4</div>
+          <div>404</div>
         </div>
-        <div className="text">Post not found</div>
+        <div className="text">This page does not exist.</div>
       </div>
     </StyledWrapper>
   )

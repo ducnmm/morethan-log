@@ -4,7 +4,7 @@ const CONFIG = {
     name: "Nguyen Mau Minh Duc",
     image: "/avatar.png",
     role: "Fullstack Developer",
-    bio: "Ho Chi Minh City. TypeScript, Go, Rust, and Move — backends, product UI, and Sui.",
+    bio: "I build the services and read models behind product UIs. Based in Ho Chi Minh City.",
     email: "mauduckiengiang@gmail.com",
     linkedin: "mauduckg",
     github: "ducnmm",
@@ -19,29 +19,17 @@ const CONFIG = {
       name: "Rememe",
       href: "https://app.rememe.art/",
     },
-    {
-      name: "Dugong",
-      href: "https://dugong.up.railway.app",
-    },
-    {
-      name: "Octopus",
-      href: "https://octopus-server.up.railway.app/",
-    },
-    {
-      name: "GitHub",
-      href: "https://github.com/ducnmm",
-    },
   ],
   // blog setting (required)
   blog: {
-    title: "Duc",
-    description: "Notes and projects from Nguyen Mau Minh Duc.",
-    scheme: "dark", // 'light' | 'dark' | 'system'
+    title: "Nguyen Mau Minh Duc",
+    description: "Notes on backends, storage, and on-chain systems.",
+    scheme: "light", // 'light' | 'dark' | 'system'
   },
 
   // CONFIG configration (required)
   link: "https://morethan-log-production.up.railway.app",
-  since: 2023, // professional work started Jun 2023
+  since: 2026,
   lang: "en-US", // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES', 'ko-KR']
   ogImageGenerateURL: "https://og-image-korean.vercel.app",
 
@@ -71,7 +59,7 @@ const CONFIG = {
     },
   },
   utterances: {
-    enable: true,
+    enable: false,
     config: {
       repo: process.env.NEXT_PUBLIC_UTTERANCES_REPO || "ducnmm/morethan-log",
       "issue-term": "og:title",

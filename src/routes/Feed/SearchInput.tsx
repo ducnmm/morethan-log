@@ -1,19 +1,17 @@
 import styled from "@emotion/styled"
-import React, { InputHTMLAttributes, ReactNode } from "react"
-import { Emoji } from "src/components/Emoji"
-
+import React, { InputHTMLAttributes } from "react"
 interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 
 const SearchInput: React.FC<Props> = ({ ...props }) => {
   return (
     <StyledWrapper>
       <div className="top">
-        <Emoji>🔎</Emoji> Search
+        Search
       </div>
       <input
         className="mid"
         type="text"
-        placeholder="Search Keyword..."
+        placeholder="Search posts"
         {...props}
       />
     </StyledWrapper>

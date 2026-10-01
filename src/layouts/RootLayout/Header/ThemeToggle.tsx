@@ -1,6 +1,5 @@
 import styled from "@emotion/styled"
 import React from "react"
-import { Emoji } from "src/components/Emoji"
 import useScheme from "src/hooks/useScheme"
 
 type Props = {}
@@ -14,7 +13,7 @@ const ThemeToggle: React.FC<Props> = () => {
 
   return (
     <StyledWrapper onClick={handleClick}>
-      <Emoji>{scheme === "light" ? "☀️" : "🌙"}</Emoji>
+      {scheme === "light" ? "Dark" : "Light"}
     </StyledWrapper>
   )
 }
@@ -23,4 +22,6 @@ export default ThemeToggle
 
 const StyledWrapper = styled.div`
   cursor: pointer;
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.gray11};
 `
