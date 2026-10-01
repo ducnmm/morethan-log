@@ -5,6 +5,7 @@ import {
   AiOutlineGithub,
   AiOutlineInstagram,
   AiOutlineMail,
+  AiOutlineTwitter,
 } from "react-icons/ai"
 import { CONFIG } from "site.config"
 
@@ -24,6 +25,16 @@ const ContactCard: React.FC = () => {
           >
             <AiOutlineGithub className="icon" />
             <div className="name">GitHub</div>
+          </a>
+        )}
+        {CONFIG.profile.twitter && (
+          <a
+            href={`https://x.com/${CONFIG.profile.twitter}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <AiOutlineTwitter className="icon" />
+            <div className="name">X</div>
           </a>
         )}
         {CONFIG.profile.instagram && (

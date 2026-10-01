@@ -8,6 +8,7 @@ const CONFIG = {
     email: "mauduckiengiang@gmail.com",
     linkedin: "mauduckg",
     github: "ducnmm",
+    twitter: "0xducnmm",
     instagram: "",
   },
   projects: [
@@ -19,10 +20,14 @@ const CONFIG = {
       name: "Rememe",
       href: "https://app.rememe.art/",
     },
+    {
+      name: "Sui Agent Payment",
+      href: "https://www.sui.io/agentpayments",
+    },
   ],
   // blog setting (required)
   blog: {
-    title: "Nguyen Mau Minh Duc",
+    title: "ducnmm-log",
     description: "Notes on backends, storage, and on-chain systems.",
     scheme: "light", // 'light' | 'dark' | 'system'
   },
@@ -34,7 +39,7 @@ const CONFIG = {
   ogImageGenerateURL: "https://og-image-korean.vercel.app",
 
   // notion configuration (required)
-  // Public database "Duc log" in Duc's Notion. Override with NOTION_PAGE_ID if it changes.
+  // Public database "ducnmm-log" in Notion CMS. Override with NOTION_PAGE_ID if it changes.
   notionConfig: {
     pageId: process.env.NOTION_PAGE_ID || "9c87f33335894a839c70ce28155b2899",
   },
