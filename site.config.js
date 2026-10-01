@@ -39,9 +39,9 @@ const CONFIG = {
   ogImageGenerateURL: "https://og-image-korean.vercel.app",
 
   // notion configuration (required)
-  // Public database "ducnmm-log" in Notion CMS. Override with NOTION_PAGE_ID if it changes.
+  // Personal Notion CMS database. Override with NOTION_PAGE_ID if it changes.
   notionConfig: {
-    pageId: process.env.NOTION_PAGE_ID || "9c87f33335894a839c70ce28155b2899",
+    pageId: process.env.NOTION_PAGE_ID || "24aca822763d80e989f8f40732be3886",
   },
 
   // plugin configuration (optional)
