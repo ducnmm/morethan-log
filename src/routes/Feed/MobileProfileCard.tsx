@@ -17,7 +17,7 @@ const MobileProfileCard: React.FC<Props> = () => {
             src={CONFIG.profile.image}
             width={90}
             height={90}
-            css={{ position: "relative" }}
+            css={{ position: "relative", borderRadius: "999px", objectFit: "cover" }}
             alt="profile_image"
           />
           <div className="wrapper">
@@ -59,8 +59,8 @@ const StyledWrapper = styled.div`
         > .top {
           font-size: 1.25rem;
           line-height: 1.75rem;
-          font-style: italic;
-          font-weight: 700;
+          font-style: normal;
+          font-weight: 650;
         }
         > .mid {
           margin-bottom: 0.5rem;

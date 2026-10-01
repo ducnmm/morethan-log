@@ -47,23 +47,26 @@ const StyledWrapper = styled.div`
     }
     .top {
       position: relative;
-      width: 100%;
-      &:after {
-        content: "";
-        display: block;
-        padding-bottom: 100%;
+      width: 6.5rem;
+      height: 6.5rem;
+      margin: 1.25rem auto 0.25rem;
+      border-radius: 999px;
+      overflow: hidden;
+      img {
+        object-fit: cover;
       }
     }
     .mid {
       display: flex;
-      padding: 0.5rem;
+      padding: 0.5rem 0.75rem 0.75rem;
       flex-direction: column;
       align-items: center;
+      text-align: center;
       .name {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-        font-style: italic;
-        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1.4rem;
+        font-style: normal;
+        font-weight: 650;
       }
       .role {
         margin-bottom: 1rem;
