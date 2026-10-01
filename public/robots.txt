@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://morethan-log-production.up.railway.app
-
-# Sitemaps
-Sitemap: https://morethan-log-production.up.railway.app/sitemap.xml

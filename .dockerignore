@@ -3,3 +3,5 @@ node_modules
 .next
 npm-debug.log
 .railway
+public/robots.txt
+public/sitemap.xml
