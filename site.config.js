@@ -41,7 +41,7 @@ const CONFIG = {
   // notion configuration (required)
   // Personal Notion CMS database. Override with NOTION_PAGE_ID if it changes.
   notionConfig: {
-    pageId: process.env.NOTION_PAGE_ID || "24aca822763d80e989f8f40732be3886",
+    pageId: process.env.NOTION_PAGE_ID || "1a18521afa6a80c19850cbda0179c57d",
   },
 
   // plugin configuration (optional)
