@@ -58,12 +58,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
       recordMap = await getRecordMap(postDetail.id)
     } catch (err) {
       console.error(
-        `[getStaticProps] Notion getPage failed for slug=${slug} id=${postDetail.id}; skipping`,
+        `[getStaticProps] Notion getPage failed for slug=${slug} id=${postDetail.id}; retry soon`,
         err
       )
+      // Avoid caching a hard 404 for a full revalidate window when Notion rate-limits (429).
       return {
         notFound: true,
-        revalidate: CONFIG.revalidateTime,
+        revalidate: 10,
       }
     }
 

@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import React from "react"
 import { Emoji } from "src/components/Emoji"
 import { useTagsQuery } from "src/hooks/useTagsQuery"
+import { formatTagLabel } from "src/libs/utils/formatTagLabel"
 
 type Props = {}
 
@@ -44,7 +45,7 @@ const TagList: React.FC<Props> = () => {
             data-active={key === currentTag}
             onClick={() => handleClickTag(key)}
           >
-            {key}
+            {formatTagLabel(key)}
           </a>
         ))}
       </div>
