@@ -15,21 +15,24 @@ const CONFIG = {
     {
       name: "MemWal",
       href: "https://memory.walrus.xyz/",
+      icon: "🧠",
     },
     {
       name: "Rememe",
       href: "https://app.rememe.art/",
+      icon: "🎨",
     },
     {
       name: "Sui Agent Payment",
       href: "https://www.sui.io/agentpayments",
+      icon: "⚡",
     },
   ],
   // blog setting (required)
   blog: {
     title: "ducnmm-log",
     description: "Notes on backends, storage, and on-chain systems.",
-    scheme: "dark", // 'light' | 'dark' | 'system'
+    scheme: "system", // 'light' | 'dark' | 'system'
   },
 
   // CONFIG configration (required)

@@ -1,11 +1,14 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { getCookie, setCookie } from "cookies-next"
+import { deleteCookie, getCookie, setCookie } from "cookies-next"
 import { useEffect } from "react"
 import { CONFIG } from "site.config"
 import { queryKey } from "src/constants/queryKey"
 import { SchemeType } from "src/types"
 
 type SetScheme = (scheme: SchemeType) => void
+
+const getSystemScheme = (): SchemeType =>
+  window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 
 const useScheme = (): [SchemeType, SetScheme] => {
   const queryClient = useQueryClient()
@@ -28,13 +31,20 @@ const useScheme = (): [SchemeType, SetScheme] => {
   useEffect(() => {
     if (!window) return
 
+    if (followsSystemTheme) {
+      // Drop any leftover manual override so OS preference wins.
+      deleteCookie("scheme")
+      const media = window.matchMedia("(prefers-color-scheme: dark)")
+      const applySystemScheme = () => {
+        queryClient.setQueryData(queryKey.scheme(), getSystemScheme())
+      }
+      applySystemScheme()
+      media.addEventListener("change", applySystemScheme)
+      return () => media.removeEventListener("change", applySystemScheme)
+    }
+
     const cachedScheme = getCookie("scheme") as SchemeType
-    const defaultScheme = followsSystemTheme
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : data
-    setScheme(cachedScheme || defaultScheme)
+    setScheme(cachedScheme || data)
   }, [])
 
   return [data, setScheme]
