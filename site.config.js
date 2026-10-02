@@ -4,7 +4,7 @@ const CONFIG = {
     name: "Nguyen Mau Minh Duc",
     image: "/avatar.png",
     role: "Fullstack Developer",
-    bio: "I build the services and read models behind product UIs. Based in Ho Chi Minh City.",
+    bio: "Shipping backends, indexers & on-chain glue. // Ho Chi Minh City",
     email: "mauduckiengiang@gmail.com",
     linkedin: "mauduckg",
     github: "ducnmm",
