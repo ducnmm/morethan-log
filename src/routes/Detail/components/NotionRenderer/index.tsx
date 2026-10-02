@@ -51,6 +51,14 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
+const mapImageUrl = (url: string, block: any) => {
+  try {
+    return customMapImageUrl(url, block)
+  } catch {
+    return url
+  }
+}
+
 type Props = {
   recordMap: ExtendedRecordMap
 }
@@ -72,7 +80,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
           nextLink: Link,
         }}
         mapPageUrl={mapPageUrl}
-        mapImageUrl={customMapImageUrl}
+        mapImageUrl={mapImageUrl}
       />
     </StyledWrapper>
   )

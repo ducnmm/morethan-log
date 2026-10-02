@@ -10,12 +10,9 @@ import { Block } from "notion-types"
  *
  * Notion-hosted attachments still go through the Notion image proxy.
  */
-export const customMapImageUrl = (
-  url: string,
-  block: Block
-): string | null => {
+export const customMapImageUrl = (url: string, block: Block): string => {
   if (!url) {
-    return null
+    throw new Error("URL can't be empty")
   }
 
   if (url.startsWith("data:")) {
