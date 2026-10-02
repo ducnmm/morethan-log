@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       }
     }
 
-    let recordMap
+    let recordMap: Awaited<ReturnType<typeof getRecordMap>>
     try {
       recordMap = await getRecordMap(postDetail.id)
     } catch (err) {
