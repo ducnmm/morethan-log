@@ -11,27 +11,29 @@ type Props = {
 }
 
 const PostHeader: React.FC<Props> = ({ data }) => {
+  const author = data.author?.[0]
+  const authorName = author?.name || CONFIG.profile.name
+  const authorPhoto = author?.profile_photo || CONFIG.profile.image
+
   return (
     <StyledWrapper>
       <h1 className="title">{data.title}</h1>
       {data.type[0] !== "Paper" && (
         <nav>
           <div className="top">
-            {data.author && data.author[0] && data.author[0].name && (
-              <>
-                <div className="author">
-                  <Image
-                    css={{ borderRadius: "50%" }}
-                    src={data.author[0].profile_photo || CONFIG.profile.image}
-                    alt="profile_photo"
-                    width={24}
-                    height={24}
-                  />
-                  <div className="">{data.author[0].name}</div>
-                </div>
-                <div className="hr"></div>
-              </>
-            )}
+            <>
+              <div className="author">
+                <Image
+                  css={{ borderRadius: "50%" }}
+                  src={authorPhoto}
+                  alt="profile_photo"
+                  width={24}
+                  height={24}
+                />
+                <div className="">{authorName}</div>
+              </div>
+              <div className="hr"></div>
+            </>
             <div className="date">
               {formatDate(
                 data?.date?.start_date || data.createdTime,
