@@ -18,36 +18,72 @@ const filter: FilterPostsOptions = {
 }
 
 export const getStaticPaths = async () => {
-  const posts = await getPosts()
-  const filteredPost = filterPosts(posts, filter)
+  try {
+    const posts = await getPosts()
+    const filteredPost = filterPosts(posts, filter)
 
-  return {
-    paths: filteredPost.map((row) => `/${row.slug}`),
-    fallback: true,
+    return {
+      paths: filteredPost.map((row) => `/${row.slug}`),
+      fallback: "blocking",
+    }
+  } catch (err) {
+    console.error("[getStaticPaths] Notion fetch failed; building with no pre-rendered slugs", err)
+    return {
+      paths: [],
+      fallback: "blocking",
+    }
   }
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const slug = context.params?.slug
 
-  const posts = await getPosts()
-  const feedPosts = filterPosts(posts)
-  await queryClient.prefetchQuery(queryKey.posts(), () => feedPosts)
+  try {
+    const posts = await getPosts()
+    const feedPosts = filterPosts(posts)
+    await queryClient.prefetchQuery(queryKey.posts(), () => feedPosts)
 
-  const detailPosts = filterPosts(posts, filter)
-  const postDetail = detailPosts.find((t: any) => t.slug === slug)
-  const recordMap = await getRecordMap(postDetail?.id!)
+    const detailPosts = filterPosts(posts, filter)
+    const postDetail = detailPosts.find((t: any) => t.slug === slug)
 
-  await queryClient.prefetchQuery(queryKey.post(`${slug}`), () => ({
-    ...postDetail,
-    recordMap,
-  }))
+    if (!postDetail?.id) {
+      return {
+        notFound: true,
+        revalidate: CONFIG.revalidateTime,
+      }
+    }
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-    revalidate: CONFIG.revalidateTime,
+    let recordMap
+    try {
+      recordMap = await getRecordMap(postDetail.id)
+    } catch (err) {
+      console.error(
+        `[getStaticProps] Notion getPage failed for slug=${slug} id=${postDetail.id}; skipping`,
+        err
+      )
+      return {
+        notFound: true,
+        revalidate: CONFIG.revalidateTime,
+      }
+    }
+
+    await queryClient.prefetchQuery(queryKey.post(`${slug}`), () => ({
+      ...postDetail,
+      recordMap,
+    }))
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+      revalidate: CONFIG.revalidateTime,
+    }
+  } catch (err) {
+    console.error(`[getStaticProps] Notion error for slug=${slug}; skipping`, err)
+    return {
+      notFound: true,
+      revalidate: CONFIG.revalidateTime,
+    }
   }
 }
 

@@ -33,7 +33,7 @@ const CONFIG = {
   },
 
   // CONFIG configration (required)
-  link: "https://ducnmm-log.up.railway.app",
+  link: "https://ducnmm-log.xyz",
   since: 2026,
   lang: "en-US", // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES', 'ko-KR']
   ogImageGenerateURL: "https://og-image-korean.vercel.app",
