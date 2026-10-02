@@ -12,7 +12,9 @@ ARG NOTION_PAGE_ID
 ENV NOTION_PAGE_ID=${NOTION_PAGE_ID}
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN yarn build
+# CACHEBUST invalidates this layer when Notion content changes without a code edit
+ARG CACHEBUST=1
+RUN echo "cachebust=$CACHEBUST" && yarn build
 
 ENV NODE_ENV=production
 EXPOSE 3000
