@@ -45,6 +45,18 @@ export const getPosts = async () => {
         properties.fullWidth =
           (pageBlockValue?.format as any)?.page_full_width ?? false
 
+        // Prefer explicit thumbnail file property; else page cover (Unsplash/OG URLs).
+        if (!properties.thumbnail) {
+          const cover = (pageBlockValue?.format as any)?.page_cover as
+            | string
+            | undefined
+          if (cover) {
+            properties.thumbnail = cover.startsWith("/")
+              ? `https://www.notion.so${cover}`
+              : cover
+          }
+        }
+
         data.push(properties)
       }
 

@@ -67,10 +67,10 @@ const CONFIG = {
     },
   },
   utterances: {
-    enable: false,
+    enable: true,
     config: {
       repo: process.env.NEXT_PUBLIC_UTTERANCES_REPO || "ducnmm/morethan-log",
-      "issue-term": "og:title",
+      "issue-term": "pathname",
       label: "💬 Utterances",
     },
   },
