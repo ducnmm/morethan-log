@@ -115,13 +115,33 @@ const StyledWrapper = styled.div`
     border-left-width: 3px;
   }
   .notion-column-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin: 0.75rem 0;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: stretch;
+    gap: 0.85rem;
+    margin: 1rem 0;
+    width: 100% !important;
   }
   .notion-column {
-    min-width: 0;
+    /* Override Notion inline percentage widths that collapse in this layout */
+    width: auto !important;
+    flex: 1 1 260px !important;
+    min-width: min(100%, 260px) !important;
+    max-width: 100% !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .notion-column .notion-callout {
+    height: 100%;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 720px) {
+    .notion-column {
+      flex: 1 1 100% !important;
+      min-width: 100% !important;
+    }
   }
   .notion-hr {
     margin: 1.75rem 0;
