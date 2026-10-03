@@ -9,17 +9,30 @@ const gotOptions = {
   },
 }
 
-/** Notion now often returns { spaceId, value: block } or { role, value }. */
+/** Peel Notion's {spaceId,value} / {role,value} envelopes until a real block. */
 function unwrapEntry(entry: any) {
   if (!entry) return entry
-  if (entry.value?.value && (entry.value.role || entry.value.value?.type)) {
-    return { role: entry.value.role || "reader", value: entry.value.value }
-  }
-  if (entry.spaceId && entry.value?.type) {
-    return { role: "reader", value: entry.value }
-  }
-  if (entry.value?.type && !entry.role) {
-    return { role: "reader", value: entry.value }
+  let cur: any = entry
+  for (let i = 0; i < 5; i++) {
+    if (cur?.type && cur?.id) {
+      return { role: "reader", value: cur }
+    }
+    if (cur?.value?.type && cur?.value?.id) {
+      return { role: cur.role || "reader", value: cur.value }
+    }
+    if (cur?.spaceId && cur?.value) {
+      cur = cur.value
+      continue
+    }
+    if (cur?.role && cur?.value) {
+      cur = cur.value
+      continue
+    }
+    if (cur?.value && typeof cur.value === "object") {
+      cur = cur.value
+      continue
+    }
+    break
   }
   return entry
 }
@@ -40,6 +53,32 @@ export function normalizeRecordMap(recordMap: ExtendedRecordMap) {
   return recordMap
 }
 
+async function mergeBlocks(
+  api: NotionAPI,
+  recordMap: ExtendedRecordMap,
+  ids: string[]
+) {
+  if (!ids.length) return
+  try {
+    const res = await (api as any).getBlocks(ids, gotOptions)
+    for (const [cid, entry] of Object.entries(res?.recordMap?.block || {})) {
+      recordMap.block[cid] = unwrapEntry(entry) as any
+    }
+  } catch (err) {
+    console.warn("[notion] getBlocks batch failed", ids.length, err)
+    for (const cid of ids) {
+      try {
+        const res = await (api as any).getBlocks([cid], gotOptions)
+        for (const [k, entry] of Object.entries(res?.recordMap?.block || {})) {
+          recordMap.block[k] = unwrapEntry(entry) as any
+        }
+      } catch (e) {
+        console.warn("[notion] getBlocks single failed", cid, e)
+      }
+    }
+  }
+}
+
 async function fetchMissingContentBlocks(
   api: NotionAPI,
   recordMap: ExtendedRecordMap,
@@ -50,29 +89,22 @@ async function fetchMissingContentBlocks(
   const content: string[] = page?.content || []
   if (!content.length) return
 
-  let missing = content.filter((cid) => !recordMap.block?.[cid])
-  while (missing.length) {
-    const batch = missing.slice(0, 50)
-    const res = await (api as any).getBlocks(batch, gotOptions)
-    const incoming = res?.recordMap?.block || {}
-    for (const [cid, entry] of Object.entries(incoming)) {
-      recordMap.block[cid] = unwrapEntry(entry) as any
-    }
-    const still = content.filter((cid) => !recordMap.block?.[cid])
-    if (still.length === missing.length) break
-    missing = still
+  for (let round = 0; round < 4; round++) {
+    const missing = content.filter((cid) => !recordMap.block?.[cid])
+    if (!missing.length) return
+    await mergeBlocks(api, recordMap, missing.slice(0, 50))
+    const still = content.filter((cid) => !recordMap.block?.[cid]).length
+    if (still === missing.length) break
   }
 }
 
 export async function getPublicPage(pageId: string) {
   const api = new NotionAPI()
-  // Prefer raw + manual missing-block fetch: getPage can drop page.content
-  // under Notion's newer { spaceId, value } block envelope.
   const raw = await (api as any).getPageRaw(pageId, {
     gotOptions,
     chunkLimit: 100,
   })
-  let recordMap = normalizeRecordMap(raw.recordMap as ExtendedRecordMap)
+  const recordMap = normalizeRecordMap(raw.recordMap as ExtendedRecordMap)
   recordMap.collection = recordMap.collection ?? ({} as any)
   recordMap.collection_view = recordMap.collection_view ?? ({} as any)
   recordMap.notion_user = recordMap.notion_user ?? ({} as any)
@@ -81,7 +113,6 @@ export async function getPublicPage(pageId: string) {
 
   await fetchMissingContentBlocks(api, recordMap, pageId)
 
-  // Also pull nested missing blocks one more pass (bullets under toggles, etc.)
   const id = idToUuid(pageId)
   const blockEntry = recordMap.block?.[id]?.value as any
   const blockValue = blockEntry?.value ?? blockEntry
@@ -98,14 +129,8 @@ export async function getPublicPage(pageId: string) {
       viewValue,
       { gotOptions }
     )
-    recordMap.block = {
-      ...recordMap.block,
-      ...Object.fromEntries(
-        Object.entries(data.recordMap?.block || {}).map(([k, v]) => [
-          k,
-          unwrapEntry(v),
-        ])
-      ),
+    for (const [k, v] of Object.entries(data.recordMap?.block || {})) {
+      recordMap.block[k] = unwrapEntry(v) as any
     }
     recordMap.collection = {
       ...recordMap.collection,
