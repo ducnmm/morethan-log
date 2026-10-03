@@ -62,11 +62,11 @@ const StyledWrapper = styled.div`
     max-width: 42rem;
   }
 
-  /* About only. Other posts stay 56rem / 42rem. */
+  /* About only: wider text column. Other posts stay 56rem / 42rem. */
   &[data-about="true"] {
-    max-width: 64rem;
+    max-width: 68rem;
     > article {
-      max-width: 50rem;
+      max-width: 58rem;
     }
   }
 `
