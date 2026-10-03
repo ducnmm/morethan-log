@@ -19,11 +19,5 @@ export default PageDetail
 
 const StyledWrapper = styled.div`
   margin: 0 auto;
-  width: 100%;
-  max-width: 100%;
-  padding: 2rem 1.25rem 3rem;
-  @media (min-width: 900px) {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
+  max-width: 56rem;
 `
