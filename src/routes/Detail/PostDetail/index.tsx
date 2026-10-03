@@ -16,8 +16,10 @@ const PostDetail: React.FC<Props> = () => {
 
   const category = (data.category && data.category?.[0]) || undefined
 
+  const isAbout = data.slug === "about"
+
   return (
-    <StyledWrapper>
+    <StyledWrapper data-about={isAbout ? "true" : undefined}>
       <article>
         {category && (
           <div css={{ marginBottom: "0.5rem" }}>
@@ -58,5 +60,13 @@ const StyledWrapper = styled.div`
   > article {
     margin: 0 auto;
     max-width: 42rem;
+  }
+
+  /* About only. Other posts stay 56rem / 42rem. */
+  &[data-about="true"] {
+    max-width: 64rem;
+    > article {
+      max-width: 50rem;
+    }
   }
 `
