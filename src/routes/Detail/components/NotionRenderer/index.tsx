@@ -89,7 +89,6 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
 export default NotionRenderer
 
 const StyledWrapper = styled.div`
-  /* // TODO: why render? */
   .notion-collection-page-properties {
     display: none !important;
   }
@@ -101,9 +100,45 @@ const StyledWrapper = styled.div`
     width: 100%;
   }
   .notion-text {
-    padding: 0.2rem 0;
+    padding: 0.25rem 0;
   }
   .notion-h-title {
     width: 100%;
+  }
+  .notion-callout {
+    margin: 0.85rem 0;
+    border-radius: 0.75rem;
+  }
+  .notion-quote {
+    margin: 1.25rem 0;
+    font-size: 1.05rem;
+    border-left-width: 3px;
+  }
+  .notion-column-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0.75rem 0;
+  }
+  .notion-column {
+    min-width: 0;
+  }
+  .notion-hr {
+    margin: 1.75rem 0;
+  }
+  .notion-bookmark {
+    margin: 0.75rem 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .notion-simple-table {
+    width: 100%;
+    margin: 0.75rem 0;
+  }
+  .notion-code {
+    border-radius: 0.35rem;
+  }
+  .notion-toggle {
+    margin: 0.4rem 0;
   }
 `
