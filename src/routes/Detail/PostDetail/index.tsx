@@ -16,10 +16,8 @@ const PostDetail: React.FC<Props> = () => {
 
   const category = (data.category && data.category?.[0]) || undefined
 
-  const isAbout = data.slug === "about"
-
   return (
-    <StyledWrapper data-about={isAbout ? "true" : undefined}>
+    <StyledWrapper>
       <article>
         {category && (
           <div css={{ marginBottom: "0.5rem" }}>
@@ -62,11 +60,4 @@ const StyledWrapper = styled.div`
     max-width: 42rem;
   }
 
-  /* About only: text column nearly fills the card. Other posts stay 56rem / 42rem. */
-  &[data-about="true"] {
-    max-width: 100%;
-    > article {
-      max-width: 64rem;
-    }
-  }
 `
