@@ -8,10 +8,9 @@ import styled from "@emotion/styled"
 
 type Props = {
   data: TPost
-  compact?: boolean
 }
 
-const PostHeader: React.FC<Props> = ({ data, compact }) => {
+const PostHeader: React.FC<Props> = ({ data }) => {
   const author = data.author?.[0]
   const authorName = author?.name || CONFIG.profile.name
   const authorPhoto = author?.profile_photo || CONFIG.profile.image
@@ -19,7 +18,7 @@ const PostHeader: React.FC<Props> = ({ data, compact }) => {
   return (
     <StyledWrapper>
       <h1 className="title">{data.title}</h1>
-      {data.type[0] !== "Paper" && !compact && (
+      {data.type[0] !== "Paper" && (
         <nav>
           <div className="top">
             <>
