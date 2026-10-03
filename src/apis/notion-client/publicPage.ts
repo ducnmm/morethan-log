@@ -1,6 +1,6 @@
 import { NotionAPI } from "notion-client"
 import { ExtendedRecordMap } from "notion-types"
-import { idToUuid } from "notion-utils"
+import { idToUuid, parsePageId } from "notion-utils"
 
 const gotOptions = {
   headers: {
@@ -53,30 +53,58 @@ export function normalizeRecordMap(recordMap: ExtendedRecordMap) {
   return recordMap
 }
 
-async function mergeBlocks(
-  api: NotionAPI,
-  recordMap: ExtendedRecordMap,
-  ids: string[]
-) {
-  if (!ids.length) return
-  try {
-    const res = await (api as any).getBlocks(ids, gotOptions)
-    for (const [cid, entry] of Object.entries(res?.recordMap?.block || {})) {
-      recordMap.block[cid] = unwrapEntry(entry) as any
-    }
-  } catch (err) {
-    console.warn("[notion] getBlocks batch failed", ids.length, err)
-    for (const cid of ids) {
-      try {
-        const res = await (api as any).getBlocks([cid], gotOptions)
-        for (const [k, entry] of Object.entries(res?.recordMap?.block || {})) {
-          recordMap.block[k] = unwrapEntry(entry) as any
-        }
-      } catch (e) {
-        console.warn("[notion] getBlocks single failed", cid, e)
-      }
-    }
+function mergeRecordMap(target: any, incoming: any) {
+  if (!incoming) return
+  for (const table of [
+    "block",
+    "collection",
+    "collection_view",
+    "notion_user",
+  ]) {
+    if (!incoming[table]) continue
+    target[table] = { ...(target[table] || {}), ...incoming[table] }
   }
+}
+
+/**
+ * notion-client's getPageRaw only loads the first chunk (empty cursor).
+ * Long pages (About) need follow-up loadPageChunk calls with the returned cursor.
+ */
+async function loadAllPageChunks(api: NotionAPI, pageId: string) {
+  const id = parsePageId(pageId)
+  if (!id) throw new Error(`invalid notion pageId "${pageId}"`)
+
+  let cursor: any = { stack: [] }
+  let chunkNumber = 0
+  const recordMap: any = {
+    block: {},
+    collection: {},
+    collection_view: {},
+    notion_user: {},
+    collection_query: {},
+    signed_urls: {},
+  }
+
+  for (let i = 0; i < 10; i++) {
+    const res = await (api as any).fetch({
+      endpoint: "loadPageChunk",
+      body: {
+        pageId: id,
+        limit: 100,
+        chunkNumber,
+        cursor,
+        verticalColumns: false,
+      },
+      gotOptions,
+    })
+    mergeRecordMap(recordMap, res?.recordMap)
+    const stack = res?.cursor?.stack
+    if (!stack || !stack.length) break
+    cursor = res.cursor
+    chunkNumber += 1
+  }
+
+  return recordMap as ExtendedRecordMap
 }
 
 async function fetchMissingContentBlocks(
@@ -92,7 +120,15 @@ async function fetchMissingContentBlocks(
   for (let round = 0; round < 4; round++) {
     const missing = content.filter((cid) => !recordMap.block?.[cid])
     if (!missing.length) return
-    await mergeBlocks(api, recordMap, missing.slice(0, 50))
+    try {
+      const res = await (api as any).getBlocks(missing.slice(0, 50), gotOptions)
+      for (const [cid, entry] of Object.entries(res?.recordMap?.block || {})) {
+        recordMap.block[cid] = unwrapEntry(entry) as any
+      }
+    } catch (err) {
+      console.warn("[notion] getBlocks failed", err)
+      break
+    }
     const still = content.filter((cid) => !recordMap.block?.[cid]).length
     if (still === missing.length) break
   }
@@ -100,17 +136,7 @@ async function fetchMissingContentBlocks(
 
 export async function getPublicPage(pageId: string) {
   const api = new NotionAPI()
-  const raw = await (api as any).getPageRaw(pageId, {
-    gotOptions,
-    chunkLimit: 100,
-  })
-  const recordMap = normalizeRecordMap(raw.recordMap as ExtendedRecordMap)
-  recordMap.collection = recordMap.collection ?? ({} as any)
-  recordMap.collection_view = recordMap.collection_view ?? ({} as any)
-  recordMap.notion_user = recordMap.notion_user ?? ({} as any)
-  recordMap.collection_query = recordMap.collection_query ?? ({} as any)
-  recordMap.signed_urls = recordMap.signed_urls ?? ({} as any)
-
+  let recordMap = normalizeRecordMap(await loadAllPageChunks(api, pageId))
   await fetchMissingContentBlocks(api, recordMap, pageId)
 
   const id = idToUuid(pageId)
