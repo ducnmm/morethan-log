@@ -62,11 +62,11 @@ const StyledWrapper = styled.div`
     max-width: 42rem;
   }
 
-  /* About only: wider text column. Other posts stay 56rem / 42rem. */
+  /* About only: text column nearly fills the card. Other posts stay 56rem / 42rem. */
   &[data-about="true"] {
-    max-width: 68rem;
+    max-width: 100%;
     > article {
-      max-width: 58rem;
+      max-width: 64rem;
     }
   }
 `
