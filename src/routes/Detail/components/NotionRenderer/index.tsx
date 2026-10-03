@@ -95,8 +95,15 @@ const StyledWrapper = styled.div`
   }
   .notion-page {
     padding: 0;
+    width: 100% !important;
   }
   .notion-list {
+    width: 100%;
+  }
+  .notion-text {
+    padding: 0.2rem 0;
+  }
+  .notion-h-title {
     width: 100%;
   }
 `
