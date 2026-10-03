@@ -19,5 +19,5 @@ export default PageDetail
 
 const StyledWrapper = styled.div`
   margin: 0 auto;
-  max-width: 56rem;
+  max-width: 72rem;
 `
