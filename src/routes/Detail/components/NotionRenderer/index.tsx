@@ -99,4 +99,15 @@ const StyledWrapper = styled.div`
   .notion-list {
     width: 100%;
   }
+  /* Notion stores narrow column widths; stretch simple tables to the article. */
+  .notion-simple-table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  .notion-simple-table td {
+    width: auto !important;
+  }
+  .notion-simple-table td:first-of-type {
+    width: 28% !important;
+  }
 `
